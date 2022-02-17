@@ -1,0 +1,32 @@
+dotenv: .env
+compiler:
+  solc:
+    remappings:
+      - "@openzeppelin-upgradeable=OpenZeppelin/openzeppelin-contracts-upgradeable@4.2.0"
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.2.0"
+      - '@chainlink=smartcontractkit/chainlink-brownie-contracts@0.2.2'
+dependencies:
+  - OpenZeppelin/openzeppelin-contracts@4.2.0
+  - OpenZeppelin/openzeppelin-contracts-upgradeable@4.2.0
+  - smartcontractkit/chainlink-brownie-contracts@0.2.2
+autofetch_sources: True
+wallets:
+  from_key: ${PRIVATE_KEY_ACCOUNT1}
+networks:
+  default: development
+  development:
+    keyhash: '0x6c3699283bda56ad74f6b855546325b68d482e983852a7a82979cc4807b641f4'
+    fee: 100000000000000000 # 0.1 LINK
+    verify: False
+  polygon-main:
+    vrf_coordinator: '0x3d2341ADb2D31f1c5530cDC622016af293177AE0'
+    link_token: '0xb0897686c545045aFc77CF20eC7A532E3120E0F1'
+    keyhash: '0xf86195cf7690c55907b2b611ebb7343a6f649bff128701cc542f0569e2c549da'
+    fee: 100000000000000 # 0.0001 LINK
+    verify: False
+  rinkeby:
+    vrf_coordinator: '0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B'
+    link_token: '0x01BE23585060835E02B77ef475b0Cc51aA1e0709'
+    keyhash: '0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311'
+    fee: 100000000000000000 # 0.1 LINK
+    verify: False
