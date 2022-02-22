@@ -7,7 +7,9 @@ pragma solidity ^0.8.2;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/interfaces/IERC2981.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
+
 
 /*
 * @title Reveal ERC721 using oracle
@@ -17,6 +19,7 @@ import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 */
 contract RevealERC721 is
     ERC721,
+    IERC2981,
     Pausable,
     Ownable,
     VRFConsumerBase
@@ -34,6 +37,7 @@ contract RevealERC721 is
     uint256[] private tokenIDs;
     uint256 private linkFee;
     bytes32 private linkKeyhash;
+    uint256 private royalt;
 
     constructor(
         string memory _collectionName,
@@ -76,6 +80,27 @@ contract RevealERC721 is
     {
         // https://docs.opensea.io/docs/contract-level-metadata
         return string(abi.encodePacked(baseURI,"contract.json"));
+    }
+
+    /*
+    * @dev Royalty is in percentange, 100 = 1%
+    */
+    function setRoyalty(
+        uint256 _royalt
+    )
+    public onlyOwner
+    {
+        royalt = _royalt;
+    }
+
+    function royaltyInfo(
+        uint256 _tokenId,
+        uint256 _salePrice
+    )
+    external view override
+    returns (address,uint256)
+    {
+        return (owner(), _salePrice/10000*royalt);
     }
 
     function fulfillRandomness(
@@ -166,6 +191,15 @@ contract RevealERC721 is
     internal whenNotPaused override 
     {
         super._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, IERC165)
+        returns (bool)
+    {
+        return interfaceId == type(IERC2981).interfaceId || super.supportsInterface(interfaceId);
     }
 
 }

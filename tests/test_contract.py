@@ -131,4 +131,20 @@ def test_normal_workflow():
     with brownie.reverts("ERC721: transfer caller is not owner nor approved"):
         ct.transferFrom(accounts[2].address, accounts[4].address, 2, {'from': account0})
 
-    return ct
+    # Test interfaces
+    supported_interface_ids = {
+        "ERC721": 0x80ac58cd,         # Non-Fungible Token Standard
+        "ERC721Metadata": 0x5b5e139f, # Non-Fungible Token Standard, optional metadata extension
+        "IERC2981": 0x2a55205a,       # NFT Royalty Standard
+        "EIP165": 0x01ffc9a7,         # Standard Interface Detection
+    }
+    for interface, id in supported_interface_ids.items():
+        assert ct.supportsInterface(id) == True, "supportsInterface: "+interface
+
+    # Test royalt
+    sale_price = 100000
+    assert ct.royaltyInfo(1, sale_price) == (account0.address, sale_price*0)
+    with brownie.reverts("Ownable: caller is not the owner"):
+        ct.setRoyalty(200, {"from": accounts[1]})
+    ct.setRoyalty(200, {'from': account0})
+    assert ct.royaltyInfo(1, sale_price) == (account0.address, sale_price*0.02)

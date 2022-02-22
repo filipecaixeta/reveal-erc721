@@ -2,12 +2,12 @@ dotenv: .env
 compiler:
   solc:
     remappings:
-      - "@openzeppelin-upgradeable=OpenZeppelin/openzeppelin-contracts-upgradeable@4.2.0"
-      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.2.0"
+      - "@openzeppelin-upgradeable=OpenZeppelin/openzeppelin-contracts-upgradeable@4.5.0"
+      - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.5.0"
       - '@chainlink=smartcontractkit/chainlink-brownie-contracts@0.2.2'
 dependencies:
-  - OpenZeppelin/openzeppelin-contracts@4.2.0
-  - OpenZeppelin/openzeppelin-contracts-upgradeable@4.2.0
+  - OpenZeppelin/openzeppelin-contracts@4.5.0
+  - OpenZeppelin/openzeppelin-contracts-upgradeable@4.5.0
   - smartcontractkit/chainlink-brownie-contracts@0.2.2
 autofetch_sources: True
 wallets:
